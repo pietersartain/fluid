@@ -1,0 +1,109 @@
+Questions to ask:
+
+"Show me all the times I've done this WoD. Plot results over time."
+
+"Show me all the pullups I've ever done"
+
+"... now include all the exercises I did before a pullup"
+
+"Which prior exercises are the most common?"
+
+"Which subsquent exercises are the most common?"
+
+~~~~~~~~~~~~~~~~~~~
+
+workouts
+	workout_id
+	working_name
+	scoring_description
+
+workout_exercises
+	workout_id
+	exercise_id
+	exercise_order
+	rx_reps
+
+exercises
+	exercise_id
+	exercise_name
+	exercise_unit (kg, ??)
+
+workout_results
+	workout_result_id
+	workout_id
+#	user_id
+	score
+
+workout_exercise_results
+	exercise_result_id
+	exercise_id
+	workout_id
+#	user_id
+	reps
+	modifier
+	score
+
+#users
+#	user_id
+#	user_name
+
+~~~~~~~~~~~~~~~~~~~
+
+X min AMRAP - Name [5 rounds + 4 x B]
+	- 5  x A @Y kg [weight]
+	- 10 x B [modifier]
+	- 15 x C
+
+Score rounds + over reps
+
+~~~~~~~~~~~~~~~~~~~
+
+X rounds for time - Name [20 min]
+	- 10 x A 
+	- 20 x B
+	- 30 x C
+
+Score minutes taken
+
+~~~~~~~~~~~~~~~~~~~
+
+Weights
+	- 5 x 3 lift [10 - 20 - 30 - 40 - 50]
+
+Score each lift weight
+
+~~~~~~~~~~~~~~~~~~~
+
+Complex compound AMRAP
+
+20 min AMRAP - Name [11 rounds + 5 x B]
+	3 min AMRAP
+		- 5  x A @Y kg [weight]
+		- 10 x B [modifier]
+		- 15 x C
+	1 min AMRAP
+		- Rest
+
+Score rounds + over reps
+
+~~~~~~~~~~~~~~~~~~~
+
+16 min AMRAP - Tabata Something Else [135]
+	- Tabata Pull   [25]
+	- Tabata Push   [35]
+	- Tabata Sit    [34]
+	- Tabata Squat  [41]
+
+Score total reps
+
+~~~~~~~~~~~~~~~~~~~
+
+20 min AMRAP - Tabata This [20]
+	- Tabata row    [4]
+	- Tabata squat  [5]
+	- Tabata situp  [3]
+	- Tabata push   [3]
+	- Tabata pull   [5]
+
+Score total of lowest reps
+

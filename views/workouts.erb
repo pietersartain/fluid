@@ -1,0 +1,40 @@
+<section id="workouts">
+
+<ul>
+<% @workouts.each do |workout| %>
+  <li><%=workout['workout']['workout_name']%>
+    <% if workout['workout']['scoring_description'] %>
+      (<%=workout['workout']['scoring_description']%>)
+    <% end %>
+  </li>
+  <ul>
+    <% workout['exercises'].each do |exercise| %>
+      <li>
+        <%=exercise['rx_reps']%>
+        <%=exercise['exercise_name']%>
+        <% if exercise['rx_multiplier'] %>
+          @ <%=exercise['rx_multiplier']%>
+          <%=exercise['exercise_unit']%>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+</ul>
+
+<form action="/workouts" method="post">
+  <textarea name="workout">
+    
+    {"workout_name":"NewWOD","scoring_description":"Yayyy",
+      "workout_exercises":
+      [
+        {"exercise_id":"1","rx_reps":"210"},
+        {"exercise_id":"3","rx_reps":"211"},
+        {"exercise_id":"5","rx_reps":"212", "rx_multiplier":"8"}
+      ]
+    }
+  </textarea>
+  <input type="submit">
+</form>
+
+</section>

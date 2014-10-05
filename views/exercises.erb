@@ -1,0 +1,19 @@
+<section id="exercises">
+
+<ul>
+<% @exercises.each do |exercise| %>
+  <li><%=exercise['exercise_name']%> 
+  <% if exercise['exercise_unit'] %>
+  (<%=exercise['exercise_unit']%>)
+  <% end %>
+  </li>
+<% end %>
+</ul>
+
+<form action="/exercises" method="post">
+  <input name="exercise_name" type="text">
+  <input type="exercise_unit" type="text">
+  <input type="submit">
+</form>
+
+</section>
