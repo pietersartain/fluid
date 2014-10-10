@@ -12,7 +12,7 @@ INSERT INTO exercises(exercise_name,exercise_unit) VALUES("Thrusters","kg");
 
 
 /* Workout A */
-INSERT INTO workouts(workout_name, scoring_description) VALUES("Workout A", "AMRAP");
+INSERT INTO workouts(workout_name, scoring_description, scoring_unit) VALUES("Workout A", "AMRAP", "rounds");
 INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps)
  VALUES(1, 1, 1, 10);
 INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps)
@@ -24,7 +24,7 @@ INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps)
 
 
 /* Workout B */
-INSERT INTO workouts(workout_name, scoring_description) VALUES("Workout B", "Time");
+INSERT INTO workouts(workout_name, scoring_description, scoring_unit) VALUES("Workout B", "Do stuff", "time");
 INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps, rx_multiplier)
  VALUES(2, 5, 1, 111, 222);
 INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps, rx_multiplier)
@@ -33,7 +33,7 @@ INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps, 
  VALUES(2, 7, 3, 113, 224);
 
 /* Workout - Fran */
-INSERT INTO workouts(workout_name, scoring_description) VALUES("Fran", "Time");
+INSERT INTO workouts(workout_name, scoring_description, scoring_unit) VALUES("Fran", "Do things", "time");
 INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps, rx_multiplier)
  VALUES(3, 8, 1, 21, 45);
 INSERT INTO workout_exercises(workout_id, exercise_id, exercise_order, rx_reps)

@@ -2,11 +2,22 @@
 
 <ul>
 <% @exercises.each do |exercise| %>
-  <li><%=exercise['exercise_name']%> 
-  <% if exercise['exercise_unit'] %>
-  (<%=exercise['exercise_unit']%>)
+  <li><%=exercise['exercise']['exercise_name']%> 
+  <% if exercise['exercise']['exercise_unit'] %>
+  (<%=exercise['exercise']['exercise_unit']%>)
   <% end %>
   </li>
+  <ul>
+    <% exercise['workouts'].each do |workout| %>
+      <li>
+        <%=workout['workout_name']%> - <%=workout['rx_reps'] %>
+        <% if workout['rx_multiplier'] %>
+          @ <%=workout['rx_multiplier']%>
+          <%=workout['exercise_unit']%>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
 <% end %>
 </ul>
 

@@ -1,5 +1,7 @@
 
 require './lib/dbhelper'
+require './lib/exercises'
+require './lib/workouts'
 
 require 'pp'
 require 'JSON'
@@ -11,6 +13,10 @@ class Fluid < Sinatra::Base
 
     # Initialise the database
     @db = Dbhelper.new
+
+    # Initialise the models
+    @w = Workouts.new(@db)
+    @e = Exercises.new(@db)
   end
 
   get '/' do
@@ -20,19 +26,26 @@ class Fluid < Sinatra::Base
 
 # View all exercises
   get '/exercises' do
-    @exercises = @db.get_exercises
+    @exercises = @e.get
+    pp @exercises
     [200, erb(:exercises)]
   end
 
 # Add new exercise
   post '/exercises' do
-    @db.add_exercise(params[:exercise_name], params[:exercise_unit])
+    @e.add(params[:exercise_name], params[:exercise_unit])
     redirect request.path_info
+  end
+
+# ...
+  get '/exercise/:type' do
+    @details = @e.get_details(params[:type])
+    [200, erb(:exercise_details)]
   end
 
 # View all workouts
   get '/workouts' do
-    @workouts = @db.get_workouts
+    @workouts = @w.get
     [200, erb(:workouts)]
   end
 
@@ -41,11 +54,14 @@ class Fluid < Sinatra::Base
     json = params[:workout]
     workout = JSON.parse(json)
 
-    @db.add_workout(workout["workout_name"], workout["scoring_description"])
-    workout_id = @db.last_insert_row_id
+    workout_id = @w.add(
+      workout["workout_name"], 
+      workout["scoring_description"],
+      workout["scoring_unit"]
+    )
     
     workout["workout_exercises"].each do |exercise|
-      @db.add_exercise_to_workout(
+      @w.add_exercise(
         workout_id,
         exercise["exercise_id"],
         exercise["exercise_order"],
@@ -55,6 +71,10 @@ class Fluid < Sinatra::Base
     end
 
     redirect request.path_info
+  end
+
+  get '/records/:workout_id' do
+    [200, erb(:records)]
   end
 
 # Record new workout

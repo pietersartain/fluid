@@ -1,11 +1,19 @@
 <section id="workouts">
 
+<h1>Workout List</h1>
+
 <ul>
 <% @workouts.each do |workout| %>
   <li><%=workout['workout']['workout_name']%>
+
     <% if workout['workout']['scoring_description'] %>
       (<%=workout['workout']['scoring_description']%>)
     <% end %>
+
+    <% if workout['workout']['scoring_unit'] %>
+      (<%=workout['workout']['scoring_unit']%>)
+    <% end %>
+
   </li>
   <ul>
     <% workout['exercises'].each do |exercise| %>
@@ -24,8 +32,10 @@
 
 <form action="/workouts" method="post">
   <textarea name="workout">
-    
-    {"workout_name":"NewWOD","scoring_description":"Yayyy",
+    {
+      "workout_name":"NewWOD",
+      "scoring_description":"Do things, count reps",
+      "scoring_unit":"seconds",
       "workout_exercises":
       [
         {"exercise_id":"1","rx_reps":"210"},
@@ -34,7 +44,61 @@
       ]
     }
   </textarea>
-  <input type="submit">
+  <input type="submit" value="Add new workout">
 </form>
+
+<h1>Record</h1>
+
+<form action="/records" method="post">
+  <textarea name="record">
+    {
+      "workout_id":"3",
+      "workout_score":"111",
+      "workout_datetime":"00000000"
+      "workout_exercise_results":
+      [
+        {"exercise_id":"1","actual_reps":"2"},
+        {"exercise_id":"3","actual_reps":"3"},
+        {"exercise_id":"5","actual_reps":"4", "actual_multiplier":"4"}
+      ]
+    }
+  </textarea>
+  <input type="submit" value="Save workout">
+</form>
+
+<!--
+<% @workouts.each do |workout| %>
+<form action="/records/<%=workout['workout']['workout_id']%>" method="post">
+<ul>
+  <li><%=workout['workout']['workout_name']%>
+    <% if workout['workout']['scoring_description'] %>
+      (<%=workout['workout']['scoring_description']%>)
+    <% end %>
+
+    <input type="text" name="workout_score">
+
+    <% if workout['workout']['scoring_unit'] %>
+      (<%=workout['workout']['scoring_unit']%>)
+    <% end %>
+  </li>
+  <ul>
+    <% workout['exercises'].each do |exercise| %>
+      <li>
+        <%=exercise['rx_reps']%> RX
+        <input type="text" name="actual_reps">
+        <%=exercise['exercise_name']%>
+        <% if exercise['rx_multiplier'] %>
+          @ <%=exercise['rx_multiplier']%>
+          <%=exercise['exercise_unit']%> RX
+          <input type="text" name="actual_multiplier">
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</ul>
+<input type="submit" value="Save">
+</form>
+<% end %>
+-->
 
 </section>
