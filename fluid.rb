@@ -20,15 +20,18 @@ class Fluid < Sinatra::Base
   end
 
   get '/' do
-    @db.init
-    [200, "All good"]
+    [200, erb(:layout)]
   end
 
 # View all exercises
   get '/exercises' do
     @exercises = @e.get
-    pp @exercises
-    [200, erb(:exercises)]
+    if request.xhr? then
+      content_type :json
+      @exercise.to_json
+    else
+      [200, erb(:exercises)]
+    end
   end
 
 # Add new exercise
@@ -40,13 +43,23 @@ class Fluid < Sinatra::Base
 # ...
   get '/exercise/:type' do
     @details = @e.get_details(params[:type])
-    [200, erb(:exercise_details)]
+    if request.xhr? then
+      content_type :json
+      @details.to_json
+    else
+      [200, erb(:exercise_details)]
+    end
   end
 
 # View all workouts
   get '/workouts' do
     @workouts = @w.get
-    [200, erb(:workouts)]
+    if request.xhr? then
+      content_type :json
+      @workouts.to_json
+    else
+      [200, erb(:workouts)]
+    end
   end
 
 # Add new workout

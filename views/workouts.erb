@@ -2,9 +2,9 @@
 
 <h1>Workout List</h1>
 
-<ul>
 <% @workouts.each do |workout| %>
-  <li><%=workout['workout']['workout_name']%>
+  <li data-toggle="collapse" data-target="#collapse-<%=workout['workout']['workout_id']%>">
+    <%=workout['workout']['workout_name']%>
 
     <% if workout['workout']['scoring_description'] %>
       (<%=workout['workout']['scoring_description']%>)
@@ -13,9 +13,9 @@
     <% if workout['workout']['scoring_unit'] %>
       (<%=workout['workout']['scoring_unit']%>)
     <% end %>
-
   </li>
-  <ul>
+
+  <div class="collapse" id="collapse-<%=workout['workout']['workout_id']%>">
     <% workout['exercises'].each do |exercise| %>
       <li>
         <%=exercise['rx_reps']%>
@@ -26,12 +26,12 @@
         <% end %>
       </li>
     <% end %>
-  </ul>
+  </div>
+
 <% end %>
-</ul>
 
 <form action="/workouts" method="post">
-  <textarea name="workout">
+  <textarea name="workout" data-replace="create">
     {
       "workout_name":"NewWOD",
       "scoring_description":"Do things, count reps",
@@ -50,7 +50,7 @@
 <h1>Record</h1>
 
 <form action="/records" method="post">
-  <textarea name="record">
+  <textarea name="record" data-replace="record">
     {
       "workout_id":"3",
       "workout_score":"111",
@@ -66,39 +66,5 @@
   <input type="submit" value="Save workout">
 </form>
 
-<!--
-<% @workouts.each do |workout| %>
-<form action="/records/<%=workout['workout']['workout_id']%>" method="post">
-<ul>
-  <li><%=workout['workout']['workout_name']%>
-    <% if workout['workout']['scoring_description'] %>
-      (<%=workout['workout']['scoring_description']%>)
-    <% end %>
-
-    <input type="text" name="workout_score">
-
-    <% if workout['workout']['scoring_unit'] %>
-      (<%=workout['workout']['scoring_unit']%>)
-    <% end %>
-  </li>
-  <ul>
-    <% workout['exercises'].each do |exercise| %>
-      <li>
-        <%=exercise['rx_reps']%> RX
-        <input type="text" name="actual_reps">
-        <%=exercise['exercise_name']%>
-        <% if exercise['rx_multiplier'] %>
-          @ <%=exercise['rx_multiplier']%>
-          <%=exercise['exercise_unit']%> RX
-          <input type="text" name="actual_multiplier">
-        <% end %>
-      </li>
-    <% end %>
-  </ul>
-</ul>
-<input type="submit" value="Save">
-</form>
-<% end %>
--->
 
 </section>
