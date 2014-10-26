@@ -1,0 +1,41 @@
+<div id="exercise-list">
+
+  <nav>
+    <h1>Exercises</h1>
+
+<a href="#" tabindex="0" class="btn btn-default btn-xs" data-toggle="popover" data-trigger="focus" title="Add exercise" 
+data-content='
+<form action="/exercises" method="post">
+  <input name="exercise_name" type="text" placeholder="Exercise name">
+  (<input type="exercise_unit" type="text" placeholder="Unit (kg, sec, min)">)
+  <input type="submit" value="Create">
+</form>'>+</a>
+
+  </nav>
+
+  <ul data-drag="exercise">
+  <% @exercises.each do |exercise| %>
+    <li data-exercise-id="<%=exercise['exercise']['exercise_id']%>"><%=exercise['exercise']['exercise_name']%> 
+    <% if exercise['exercise']['exercise_unit'] %>
+    (<%=exercise['exercise']['exercise_unit']%>)
+    <% end %>
+    </li>
+
+<!--
+    <ul>
+      <% exercise['workouts'].each do |workout| %>
+        <li>
+          <%=workout['workout_name']%> - <%=workout['rx_reps'] %>
+          <% if workout['rx_multiplier'] %>
+            @ <%=workout['rx_multiplier']%>
+            <%=workout['exercise_unit']%>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+-->
+
+  <% end %>
+  </ul>
+
+</div>

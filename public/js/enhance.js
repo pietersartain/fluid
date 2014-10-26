@@ -63,3 +63,60 @@
   });
 
 }(jQuery);
+
+$(function () { 
+  $("[data-toggle='popover']").popover({
+      'trigger': 'click'
+      ,'placement': 'bottom'
+      ,'html': 'true'
+    });
+});
+
++function ($) {
+  'use strict';
+
+  var Exercise = function (element, options) {
+    this.$element = $(element)
+    this.options = $.extend({}, Exercise.DEFAULTS, options)
+    this.isLoading = false
+  }
+
+  Exercise.VERSION = '1.0.0'
+
+  Exercise.DEFAULTS = {
+    loadingText: 'loading...'
+  }
+
+
+  Exercise.prototype.create = function (element) {
+    $(element).children("li").each(function() {
+      // $(ch).html("words words words");
+      //console.log($(this).contents());
+      $(this).draggable({ opacity: 0.7, helper: "clone" });
+    });
+
+    $("#workout_exercises").droppable({
+      drop: function( event, ui ) {
+
+        // Don't know why I do this ... stolen from unitbuilder
+        if ($(ui.draggable).is("li")) {
+          // Get the ID of the original <li>
+          var id = $(ui.draggable).attr('data-exercise-id');
+          console.log(id);
+        }
+      }
+    });
+  };
+
+  // // $.fn.scrollspy = Plugin
+  // // $.fn.scrollspy.Constructor = Workout
+
+
+  $(window).on('load.fluid.exercise.dragdrop', function () {
+    $('[data-drag="exercise"]').each(function () {
+      var Plugin = new Exercise(this, {});
+      Plugin.create(this);
+    });
+  });
+
+}(jQuery);

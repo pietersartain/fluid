@@ -87,7 +87,9 @@ class Fluid < Sinatra::Base
   end
 
   get '/records/:workout_id' do
-    [200, erb(:records)]
+    @exercises = @e.get
+
+    [200, erb(:"workout/add")]
   end
 
 # Record new workout
