@@ -23,9 +23,10 @@
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> 
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
 
-<%#
   <!-- Knockout -->
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout/3.2.0/knockout-min.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout.mapping/2.4.1/knockout.mapping.js"></script>
+<%#
   <!-- Don't need this /right/ now, but might do soon.
   <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/knockout-bootstrap/0.2.1/knockout-bootstrap.js"></script>
   -->
@@ -39,6 +40,7 @@
   <!-- Custom CSS/JS -->
   <link type="text/css" href="/stylesheets/main.css" rel="stylesheet">  
   <script type="text/javascript" src="/js/enhance.js"></script> 
+  <script type="text/javascript" src="/js/<%=@page_js %>"></script> 
 
 </head>
 
@@ -48,7 +50,8 @@
   <ul>
     <li><a href="/exercises">Exercise list</a></li>
     <li><a href="/workouts">Workout list</a></li>
-    <li><a href="/records">Record list</a></li>
+    <li><a href="/records">Records</a></li>
+    <li><a href="/workouts/new">Add workout</a></li>
   </ul>
 </nav>
 

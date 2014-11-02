@@ -19,6 +19,8 @@ class Fluid < Sinatra::Base
     @e = Exercises.new(@db)
   end
 
+# ====== HTML endpoints ======
+# All of these should return HTML or redirects
   get '/' do
     [200, erb(:layout)]
   end
@@ -26,44 +28,53 @@ class Fluid < Sinatra::Base
 # View all exercises
   get '/exercises' do
     @exercises = @e.get
-    if request.xhr? then
-      content_type :json
-      @exercise.to_json
-    else
-      [200, erb(:exercises)]
-    end
-  end
-
-# Add new exercise
-  post '/exercises' do
-    @e.add(params[:exercise_name], params[:exercise_unit])
-    redirect request.path_info
-  end
-
-# ...
-  get '/exercise/:type' do
-    @details = @e.get_details(params[:type])
-    if request.xhr? then
-      content_type :json
-      @details.to_json
-    else
-      [200, erb(:exercise_details)]
-    end
+    [200, erb(:"exercise/list")]
   end
 
 # View all workouts
   get '/workouts' do
     @workouts = @w.get
-    if request.xhr? then
-      content_type :json
-      @workouts.to_json
-    else
-      [200, erb(:workouts)]
-    end
+    [200, erb(:"workout/list")]
   end
 
 # Add new workout
-  post '/workouts' do
+  get '/workouts/new' do
+    @page_js = "add-workout.js"
+    @exercises = @e.get
+    [200, erb(:"workout/add")]
+  end
+
+
+# ====== API endpoints ======
+# All of these should return JSON
+# None should redirect
+# These all effectively assume an
+# if request.xhr? {}
+
+  get '/api/exercises' do
+    content_type :json
+    @e.get.to_json
+  end
+
+  get '/api/exercise/:type' do
+    content_type :json
+    @e.get_details(params[:type]).to_json
+  end
+
+  get '/api/workouts' do
+    content_type :json
+    @w.get.to_json
+  end
+
+# Add a new exercise
+  post '/api/exercises' do
+    @e.add(params[:exercise_name], params[:exercise_unit])
+    content_type :json
+    @e.get.to_json
+  end
+
+# Add a new workout
+  post '/api/workouts' do
     json = params[:workout]
     workout = JSON.parse(json)
 
@@ -83,13 +94,8 @@ class Fluid < Sinatra::Base
         )
     end
 
-    redirect request.path_info
-  end
-
-  get '/records/:workout_id' do
-    @exercises = @e.get
-
-    [200, erb(:"workout/add")]
+    content_type :json
+    @w.get.to_json
   end
 
 # Record new workout
