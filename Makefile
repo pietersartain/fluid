@@ -1,13 +1,16 @@
 
-default: clean test
+default: clean run
 
 prep:
 	-gem install rack
 	-bundle install
 
-test:
+run:
 	-compass compile public
 	-rackup
+
+test:
+	-rspec
 
 clean:
 	-rm fluid.db

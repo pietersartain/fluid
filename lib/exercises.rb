@@ -5,8 +5,13 @@ class Exercises
   end
 
   # Exercises
-  def get(number = nil, user = nil)
-    exercises = @db.execute("SELECT * FROM exercises")
+  def get(exercise_id = nil, number = nil, user = nil)
+    
+    if exercise_id.nil? then
+      exercises = @db.execute("SELECT * FROM exercises")
+    else
+      exercises = @db.execute("SELECT * FROM exercises WHERE exercise_id = ?", [exercise_id])
+    end
 
     exercises.map! do |x|
       { "exercise" => x,
@@ -33,12 +38,19 @@ class Exercises
     return @db.last_insert_row_id
   end
 
-  def record(workout_exercise_id, actual_reps, actual_multiplier)
+  def record(workout_result_id, workout_exercise_id, actual_reps, actual_multiplier)
     @db.execute("INSERT INTO workout_exercise_results
-      (workout_exercise_id, actual_reps, actual_multiplier
-      VALUES(?,?,?)",
-      [workout_exercise_id, actual_reps, actual_multiplier])
+      (workout_result_id, workout_exercise_id, actual_reps, actual_multiplier)
+      VALUES(?,?,?,?)",
+      [workout_result_id, workout_exercise_id, actual_reps, actual_multiplier])
     return @db.last_insert_row_id
+  end
+
+  def get_records(workout_id)
+    return @db.execute("SELECT * FROM workout_results AS wr 
+      JOIN workout_exercise_results AS wer 
+        ON wer.workout_result_id = wr.workout_result_id
+      WHERE wr.workout_id = ?", [workout_id])
   end
 
 end

@@ -1,0 +1,59 @@
+@import 'main';
+
+section {
+  @include corners;
+  min-height: 50px;
+  padding: 8px;
+}
+
+#workouts {
+  background-color: $workout-typable-background;
+  border: 1px solid $workout-line-break;
+  margin-bottom: 10px;
+  h1 {
+    margin: 0;
+  }
+}
+
+#workout-record {
+  background-color: $exercise-typable-background;
+  border: 1px solid $exercise-line-break;
+
+  li input {
+    width: 3rem;
+    background-color: $exercise-typable-background;
+    border: 1px solid $exercise-line-break;
+    border-left: 0;
+    border-top: 0;
+    border-right: 0;
+  }
+
+  #workout-title {
+    h1 {
+      display: inline;
+    }
+
+    & > input {
+      width: 5rem;
+      background-color: $exercise-typable-background;
+      border: 1px solid $exercise-line-break;
+      border-left: 0;
+      border-top: 0;
+      border-right: 0;
+    }
+
+    div.input-group.date {
+      float: right;
+      width: 22rem;
+    }
+
+  }
+
+  p {
+    border: 2px solid $exercise-line-break;
+    border-left: 0;
+    border-right: 0;
+    margin: 5px 0 5px 0;
+  }
+
+}

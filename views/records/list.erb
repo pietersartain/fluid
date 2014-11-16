@@ -1,0 +1,46 @@
+<section id="workouts" class="row">
+
+  <h1>Workouts</h1>
+
+  <div class="col-xs-4">
+    <ul data-bind="foreach: workouts">
+      <li><a href="" 
+        data-bind="html: workout.workout_name,
+        attr: { 'data-workout-id': workout.workout_id }"></a></li>
+    </ul>
+  </div>
+
+  <div id="records-list" data-bind="with: record()[0]" class="col-xs-4">
+    <ul data-bind="foreach: results">
+      <li><span data-bind="html: readable_date"></span>: <span data-bind="html: score"></span></li>
+    </ul>
+  </div>
+</section>
+
+<section id="workout-record" data-bind="with: record()[0]" class="row">
+  <div id="workout-title">
+    <h1 data-bind="html: workout.workout_name"></h1>
+    <input name="score"> <span data-bind="html: workout.scoring_unit"></span>
+
+    <div class='input-group date' id='datetimepicker1'>
+        <input type='text' class="form-control" />
+        <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+        </span>
+    </div>
+  </div>
+
+  <p data-bind="html: workout.scoring_description"></p>
+
+  <div id="workout-exercises">
+    <ul data-bind="foreach: exercises">
+      <li>
+        <input name="actual_reps" data-bind="value: rx_reps" type="text">
+        <span data-bind="html: exercise_name"></span>
+        <span data-bind="if: exercise_unit">@ <input data-bind="value: rx_multiplier" type="text"> <span data-bind="html: exercise_unit"></span> </span>
+      </li>
+    </ul>
+  </div>
+
+  <input type="submit" value="Record">
+
+</section>

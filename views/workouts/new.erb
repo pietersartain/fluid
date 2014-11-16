@@ -1,0 +1,45 @@
+<section id="exercise-list">
+
+  <div>
+    <h1>Exercises</h1>
+
+<a href="#" tabindex="0" class="btn btn-default btn-xs" data-toggle="popover" data-trigger="focus" title="Add exercise" 
+data-content='
+<form action="/api/exercises" method="post">
+  <input name="exercise_name" type="text" placeholder="Exercise name">
+  (<input type="exercise_unit" type="text" placeholder="Unit (kg, sec, min)">)
+  <input type="submit" value="Create" data-ajax-submit="add-exercise">
+</form>'>+</a>
+
+  </div>
+
+  <%# knockoutjs bindings %>
+  <ul data-drag="exercise" data-bind="foreach: ExerciseModel.exercises">
+    <li data-bind="html: exercise.exercise_name,
+      attr: { 'data-exercise-id': exercise.exercise_id }"></li>
+  </ul>
+
+</section>
+
+<section id="workouts-new">
+
+  <%# Form not required, since this is a JS-only affair %>
+  <div id="name">
+    <input name="workout_name" type="text" placeholder="Workout Name" data-bind="value: workout.workout_name">
+    <input name="scoring_unit" type="text" placeholder="Sec, rnds" data-bind="value: workout.scoring_unit">
+    <textarea name="scoring_description" placeholder="Description / instructions" data-bind="html: workout.scoring_description"></textarea>
+  </div>
+
+  <div id="workout_exercises">
+    <ul data-bind="sortable: workout.workout_exercises">
+      <li>
+        <input data-bind="value: rx_reps" type="text">
+        <span data-bind="html: exercise_name"></span>
+        <span data-bind="if: exercise_unit">@ <input data-bind="value: rx_multiplier" type="text"> <span data-bind="html: exercise_unit"></span> </span>
+      </li>
+    </ul>
+  </div>
+
+  <input type="submit" value="Create">
+
+</section>

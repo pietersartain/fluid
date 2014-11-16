@@ -19,10 +19,17 @@ class Fluid < Sinatra::Base
     @e = Exercises.new(@db)
   end
 
+  helpers do
+    def current_page
+      return request.path[1..-1]
+    end
+  end
+
+
 # ====== HTML endpoints ======
 # All of these should return HTML or redirects
   get '/' do
-    [200, erb(:layout)]
+    redirect '/workouts/new'
   end
 
 # View all exercises
@@ -34,14 +41,16 @@ class Fluid < Sinatra::Base
 # View all workouts
   get '/workouts' do
     @workouts = @w.get
-    [200, erb(:"workout/list")]
+    [200, erb(:"workouts/list")]
+  end
+
+  get '/records' do
+    [200, erb(:"records/list")]
   end
 
 # Add new workout
   get '/workouts/new' do
-    @page_js = "add-workout.js"
-    @exercises = @e.get
-    [200, erb(:"workout/add")]
+    [200, erb(request.path.to_sym) ]
   end
 
 
@@ -51,19 +60,15 @@ class Fluid < Sinatra::Base
 # These all effectively assume an
 # if request.xhr? {}
 
+## Exercises
   get '/api/exercises' do
     content_type :json
     @e.get.to_json
   end
 
-  get '/api/exercise/:type' do
+  get '/api/exercise/:id' do
     content_type :json
-    @e.get_details(params[:type]).to_json
-  end
-
-  get '/api/workouts' do
-    content_type :json
-    @w.get.to_json
+    @e.get(params[:id]).to_json
   end
 
 # Add a new exercise
@@ -71,6 +76,17 @@ class Fluid < Sinatra::Base
     @e.add(params[:exercise_name], params[:exercise_unit])
     content_type :json
     @e.get.to_json
+  end
+
+## Workouts
+  get '/api/workouts' do
+    content_type :json
+    @w.get.to_json
+  end
+
+  get '/api/workout/:id' do
+    content_type :json
+    @w.get(params[:id]).to_json
   end
 
 # Add a new workout
@@ -83,7 +99,7 @@ class Fluid < Sinatra::Base
       workout["scoring_description"],
       workout["scoring_unit"]
     )
-    
+
     workout["workout_exercises"].each do |exercise|
       @w.add_exercise(
         workout_id,
@@ -98,7 +114,38 @@ class Fluid < Sinatra::Base
     @w.get.to_json
   end
 
-# Record new workout
+## Records
+
+  # Record new workout
+  post '/api/records' do
+    json = params[:record]
+    record = JSON.parse(json)
+
+    # pp record
+
+    workout_result_id = @w.record(
+      record["workout"]["workout_id"],
+      record["workout"]["score"],
+      record["workout"]["datetime"]
+    )
+
+    pp workout_result_id
+
+    record["exercises"].each do |exercise|
+      pp workout_result_id
+
+      @e.record(
+        workout_result_id,
+        exercise["workout_exercise_id"],
+        exercise["rx_reps"],
+        exercise["rx_multiplier"]
+      )
+    end
+
+    #content_type :json
+    #@w.get.to_json
+    [200, "OK"]
+  end
 
 # Show some crazy results
 
