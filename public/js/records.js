@@ -17,14 +17,14 @@ var RecordModel = function() {
         $("#workouts li > a").click(function(ev) {
           ev.preventDefault();
           var id = $(this).attr('data-workout-id');
-          self.getWorkout(id);
+          self.getWorkoutRecords(id);
         });
       },
       'error': function() {}
     });
   };
 
-  this.getWorkout = function(workout_id) {
+  this.getWorkoutRecords = function(workout_id) {
     $.ajax({
       context: this,
       'url': '/api/workout/' + workout_id,
@@ -39,10 +39,15 @@ var RecordModel = function() {
               return (new (function () {
                 ko.mapping.fromJS(options.data, {}, this);
 
-                // setup the computed binding
-                this.readable_date = ko.computed(function () {
-                    return moment(this.datetime, "X").format("MM/DD/YYYY");;
+                // 
+                this.readable_date = ko.pureComputed(function () {
+                  return moment(this.datetime, "X").format("MM/DD/YYYY");;
                 }, this);
+
+                //
+                this.proximity = ko.pureComputed(function(){
+                  return 0;
+                });
 
               })());
             }
@@ -51,11 +56,11 @@ var RecordModel = function() {
 
         ko.mapping.fromJS(data, mappingOptions, this.record);
         $("#datetimepicker1").datetimepicker({
-          //defaultDate: Date.now()
           pickTime: false,
           language: 'gb',
           defaultDate: moment().format("MM/DD/YYYY")
         });
+
         // "Record workout" button
         $("#workout-record input[type='submit']").click(function(){
           self.insertRecord();
@@ -87,7 +92,10 @@ var RecordModel = function() {
       'url': '/api/records', // form.attr('action')
       'type': 'post', // form.attr('method')
       'data': "record=" + json_record,
-      'success': function() {},
+      'success': function(data, status, jqxhr) {
+        // Update the records
+        this.getWorkoutRecords(data.workout_id);
+      },
       'error': function() {}
     });
   }

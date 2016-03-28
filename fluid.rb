@@ -4,7 +4,7 @@ require './lib/exercises'
 require './lib/workouts'
 
 require 'pp'
-require 'JSON'
+require 'json'
 
 class Fluid < Sinatra::Base
  
@@ -121,19 +121,13 @@ class Fluid < Sinatra::Base
     json = params[:record]
     record = JSON.parse(json)
 
-    # pp record
-
     workout_result_id = @w.record(
       record["workout"]["workout_id"],
       record["workout"]["score"],
       record["workout"]["datetime"]
     )
 
-    pp workout_result_id
-
     record["exercises"].each do |exercise|
-      pp workout_result_id
-
       @e.record(
         workout_result_id,
         exercise["workout_exercise_id"],
@@ -142,9 +136,10 @@ class Fluid < Sinatra::Base
       )
     end
 
-    #content_type :json
-    #@w.get.to_json
-    [200, "OK"]
+    output = { "workout_id" => record["workout"]["workout_id"] }
+
+    content_type :json
+    [200, output.to_json]
   end
 
 # Show some crazy results
